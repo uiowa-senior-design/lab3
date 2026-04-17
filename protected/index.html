@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Protected Content — Flood Detection Network</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <meta name="robots" content="noindex, nofollow">
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="../index.html" class="nav-logo">
+      <span class="dot"></span>
+      <span class="name">Flood Detection Network</span>
+    </a>
+    <button class="nav-toggle" aria-label="Toggle navigation" onclick="this.parentElement.querySelector('.nav-links').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../index.html#team">Team</a></li>
+      <li><a href="../index.html#project">Project</a></li>
+      <li><a href="#" onclick="logout(); return false;" style="color: #555;">Log Out</a></li>
+    </ul>
+  </nav>
+
+  <!-- HEADER -->
+  <section style="padding: 4rem 3rem 3rem; max-width: 1200px; margin: 0 auto;">
+    <div class="tag" style="margin-bottom: 1.5rem;">Protected Area</div>
+    <h1 style="font-size: 3rem; font-weight: 900; color: white; letter-spacing: -0.02em; line-height: 1.1;">
+      Team Messages
+    </h1>
+    <p style="margin-top: 0.75rem; color: var(--text-muted); font-size: 0.9rem; max-width: 500px; line-height: 1.6;">
+      Contact form submissions from visitors. Session expires after 30 minutes of inactivity.
+    </p>
+
+    <!-- Session timer display -->
+    <div style="margin-top: 1.25rem; display: flex; align-items: center; gap: 0.5rem;">
+      <span style="width: 7px; height: 7px; background: var(--gold); border-radius: 50%; display: inline-block;"></span>
+      <span id="session-timer" style="font-size: 0.75rem; color: var(--text-muted); letter-spacing: 0.05em;"></span>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- FILTER TABS -->
+  <div class="page-wrap" style="padding-top: 2rem; padding-bottom: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+    <button class="filter-btn active" data-filter="all" onclick="filterMessages('all', this)">All</button>
+    <button class="filter-btn" data-filter="Ethan Holter" onclick="filterMessages('Ethan Holter', this)">Ethan</button>
+    <button class="filter-btn" data-filter="Jesse Meadows" onclick="filterMessages('Jesse Meadows', this)">Jesse</button>
+    <button class="filter-btn" data-filter="Riggen Snyder" onclick="filterMessages('Riggen Snyder', this)">Riggen</button>
+  </div>
+
+  <!-- MESSAGES LIST -->
+  <div class="page-wrap" style="padding-top: 1rem; padding-bottom: 4rem;">
+    <div id="messages-container">
+      <!-- Populated by JavaScript from the messages index -->
+      <div id="loading" style="color: var(--text-muted); font-size: 0.85rem; padding: 2rem 0;">
+        Loading messages...
+      </div>
+      <div id="empty-state" style="display: none; background: var(--surface); border: 1px solid var(--border); padding: 3rem 2rem; text-align: center;">
+        <div style="font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 0.5rem;">No Messages</div>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">No messages yet for this filter. Submissions from contact forms will appear here.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    &copy; 2026 ECE:4880 Senior Design &mdash; University of Iowa
+  </footer>
+
+  <style>
+    .filter-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.4rem 1rem;
+      cursor: pointer;
+      font-family: 'Arial', sans-serif;
+      transition: all 0.15s;
+    }
+    .filter-btn:hover { border-color: #555; color: var(--text); }
+    .filter-btn.active { background: var(--gold); color: var(--dark); border-color: var(--gold); font-weight: 700; }
+
+    .message-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--gold);
+      padding: 1.5rem 2rem;
+      margin-bottom: 1px;
+      transition: background 0.15s;
+    }
+    .message-card:hover { background: var(--surface-2); }
+    .message-card a { text-decoration: none; color: inherit; display: block; }
+    .message-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.5rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .message-sender { font-size: 0.9rem; font-weight: 700; color: white; }
+    .message-timestamp { font-size: 0.72rem; color: var(--text-muted); letter-spacing: 0.05em; }
+    .message-to { font-size: 0.72rem; color: var(--gold); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.5rem; }
+    .message-preview { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  </style>
+
+  <script src="../assets/js/auth.js"></script>
+  <script>
+    // Auth check — redirects to gate.html if session invalid
+    checkAuth();
+
+    // ── Session timer ─────────────────────────────────────────
+    function updateTimer() {
+      const last    = parseInt(sessionStorage.getItem("dfdn_last_active") || "0", 10);
+      const elapsed = Date.now() - last;
+      const remaining = Math.max(0, 30 * 60 * 1000 - elapsed);
+      const mins  = Math.floor(remaining / 60000);
+      const secs  = Math.floor((remaining % 60000) / 1000);
+      const el    = document.getElementById("session-timer");
+      if (el) el.textContent = `Session expires in ${mins}m ${secs.toString().padStart(2,"0")}s`;
+      if (remaining === 0) checkAuth();
+    }
+    updateTimer();
+    setInterval(updateTimer, 1000);
+
+    // ── Message loading ───────────────────────────────────────
+    // messages-index.json is generated by the Netlify function each time
+    // a new message is saved. It contains an array of message metadata.
+    let allMessages = [];
+    let currentFilter = "all";
+
+    async function loadMessages() {
+      try {
+        const res  = await fetch("messages/index.json?" + Date.now());
+        if (!res.ok) throw new Error("No index");
+        allMessages = await res.json();
+        renderMessages();
+      } catch {
+        // No messages yet — show empty state
+        document.getElementById("loading").style.display = "none";
+        document.getElementById("empty-state").style.display = "block";
+      }
+    }
+
+    function renderMessages() {
+      const container = document.getElementById("messages-container");
+      const loading   = document.getElementById("loading");
+      const empty     = document.getElementById("empty-state");
+
+      loading.style.display = "none";
+
+      const filtered = currentFilter === "all"
+        ? allMessages
+        : allMessages.filter(m => m.member === currentFilter);
+
+      if (filtered.length === 0) {
+        empty.style.display = "block";
+        // Remove any existing cards
+        container.querySelectorAll(".message-card").forEach(el => el.remove());
+        return;
+      }
+
+      empty.style.display = "none";
+      container.querySelectorAll(".message-card").forEach(el => el.remove());
+
+      // Sort newest first
+      filtered
+        .slice()
+        .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+        .forEach(msg => {
+          const card = document.createElement("div");
+          card.className = "message-card";
+          card.dataset.member = msg.member;
+          card.innerHTML = `
+            <a href="messages/${msg.filename}">
+              <div class="message-meta">
+                <span class="message-sender">${escHtml(msg.name)}</span>
+                <span class="message-timestamp">${formatDate(msg.timestamp)}</span>
+              </div>
+              <div class="message-to">To: ${escHtml(msg.member)}</div>
+              <div class="message-preview">${escHtml(msg.preview)}</div>
+            </a>
+          `;
+          container.appendChild(card);
+        });
+    }
+
+    function filterMessages(filter, btn) {
+      currentFilter = filter;
+      document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      renderMessages();
+    }
+
+    function escHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function formatDate(iso) {
+      return new Date(iso).toLocaleString("en-US", {
+        month: "short", day: "numeric", year: "numeric",
+        hour: "numeric", minute: "2-digit"
+      });
+    }
+
+    loadMessages();
+  </script>
+
+</body>
+</html>

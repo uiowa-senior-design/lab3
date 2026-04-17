@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Protected Access — Flood Detection Network</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <!-- No-index: this page should not appear in search results -->
+  <meta name="robots" content="noindex, nofollow">
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="../index.html" class="nav-logo">
+      <span class="dot"></span>
+      <span class="name">Flood Detection Network</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../index.html#team">Team</a></li>
+      <li><a href="../index.html#project">Project</a></li>
+    </ul>
+  </nav>
+
+  <div class="gate-wrap">
+    <div class="gate-box">
+
+      <div style="margin-bottom: 1.5rem;">
+        <div style="width: 36px; height: 36px; border: 2px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+          <svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1" y="7" width="12" height="9" rx="1" stroke="#FFCD00" stroke-width="1.5"/>
+            <path d="M4 7V4.5C4 2.84 5.34 1.5 7 1.5C8.66 1.5 10 2.84 10 4.5V7" stroke="#FFCD00" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h2>Protected Content</h2>
+        <p>Enter the team password to access messages and private project materials.</p>
+      </div>
+
+      <form id="gate-form" autocomplete="off">
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Enter password"
+            autocomplete="current-password"
+            required
+            autofocus
+          >
+        </div>
+        <button type="submit" class="btn btn-gold" style="width: 100%;" id="submit-btn">
+          Enter
+        </button>
+        <div class="gate-error" id="error-msg">Incorrect password. Please try again.</div>
+      </form>
+
+    </div>
+  </div>
+
+  <script src="../assets/js/auth.js"></script>
+  <script>
+    // If already authenticated, skip straight to protected index
+    if (sessionStorage.getItem("dfdn_session") === "authenticated") {
+      const last = parseInt(sessionStorage.getItem("dfdn_last_active") || "0", 10);
+      if ((Date.now() - last) < 30 * 60 * 1000) {
+        window.location.replace("index.html");
+      }
+    }
+
+    const form      = document.getElementById("gate-form");
+    const errorMsg  = document.getElementById("error-msg");
+    const submitBtn = document.getElementById("submit-btn");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      errorMsg.style.display = "none";
+      submitBtn.textContent  = "Checking...";
+      submitBtn.disabled     = true;
+
+      const pw      = document.getElementById("password").value;
+      const success = await login(pw);
+
+      if (success) {
+        window.location.replace("index.html");
+      } else {
+        errorMsg.style.display = "block";
+        submitBtn.textContent  = "Enter";
+        submitBtn.disabled     = false;
+        document.getElementById("password").value = "";
+        document.getElementById("password").focus();
+      }
+    });
+  </script>
+
+</body>
+</html>
