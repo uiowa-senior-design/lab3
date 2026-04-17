@@ -18,9 +18,8 @@
   --surface-2:   #1e1e1e;
   --border:      #2a2a2a;
   --text:        #e0e0e0;
-  --text-muted:  #666;
-  --text-dim:    #444;
-  --radius:      0px; /* sharp-edged aesthetic */
+  --text-muted:  #888;
+  --text-dim:    #555;
 }
 
 html { scroll-behavior: smooth; }
@@ -34,7 +33,13 @@ body {
 }
 
 img { max-width: 100%; display: block; }
-a  { color: inherit; text-decoration: none; }
+a   { color: inherit; text-decoration: none; }
+
+/* Focus ring for keyboard navigation */
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
 
 /* ── Typography helpers ───────────────────────────────────── */
 .label {
@@ -118,7 +123,8 @@ a  { color: inherit; text-decoration: none; }
   background: var(--text-muted);
   transition: background 0.2s;
 }
-.nav-toggle:hover span { background: var(--gold); }
+.nav-toggle:hover span,
+.nav-toggle:focus-visible span { background: var(--gold); }
 
 /* ── Buttons ──────────────────────────────────────────────── */
 .btn {
@@ -130,7 +136,7 @@ a  { color: inherit; text-decoration: none; }
   text-transform: uppercase;
   cursor: pointer;
   border: none;
-  transition: opacity 0.2s, background 0.2s;
+  transition: opacity 0.2s, background 0.2s, border-color 0.2s;
   text-decoration: none;
 }
 
@@ -139,6 +145,10 @@ a  { color: inherit; text-decoration: none; }
   color: var(--dark);
 }
 .btn-gold:hover { opacity: 0.85; }
+.btn-gold:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 
 .btn-dark {
   background: var(--dark);
@@ -152,7 +162,7 @@ a  { color: inherit; text-decoration: none; }
   color: var(--text-muted);
   border: 1px solid var(--border);
 }
-.btn-ghost:hover { color: var(--text); border-color: #555; }
+.btn-ghost:hover { color: var(--text); border-color: var(--text-muted); }
 
 /* ── Tag / Pill ───────────────────────────────────────────── */
 .tag {
@@ -196,7 +206,6 @@ a  { color: inherit; text-decoration: none; }
   margin-bottom: 1.75rem;
 }
 
-.section-header .label { }
 .section-header a {
   font-size: 0.8rem;
   color: var(--gold);
@@ -283,6 +292,11 @@ a  { color: inherit; text-decoration: none; }
   border-color: var(--gold);
 }
 
+.form-group input:invalid:not(:placeholder-shown),
+.form-group textarea:invalid:not(:placeholder-shown) {
+  border-color: #ff4444;
+}
+
 .form-group input::placeholder,
 .form-group textarea::placeholder {
   color: var(--text-dim);
@@ -327,18 +341,65 @@ a  { color: inherit; text-decoration: none; }
   display: none;
 }
 
+/* ── Hero watermark ───────────────────────────────────────── */
+.hero-watermark {
+  position: absolute;
+  top: 3rem;
+  right: 3rem;
+  font-size: 8rem;
+  font-weight: 900;
+  color: #1a1a1a;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* ── Two-column profile layout ────────────────────────────── */
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+.profile-header {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
 /* ── Footer ───────────────────────────────────────────────── */
 .footer {
   border-top: 1px solid var(--border);
   text-align: center;
   padding: 2rem;
   font-size: 0.75rem;
-  color: #333;
+  color: var(--text-muted);
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
 /* ── Responsive ───────────────────────────────────────────── */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .page-wrap { padding: 0 2rem; }
+  .nav       { padding: 0 2rem; }
+
+  .hero-watermark { font-size: 5rem; }
+
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-header {
+    gap: 2rem;
+  }
+}
+
+/* Mobile */
 @media (max-width: 768px) {
   .nav {
     padding: 0 1.25rem;
@@ -364,6 +425,8 @@ a  { color: inherit; text-decoration: none; }
     display: block;
   }
 
+  .hero-watermark { display: none; }
+
   .nav-toggle { display: flex; }
 
   .page-wrap { padding: 0 1.25rem; }
@@ -374,6 +437,11 @@ a  { color: inherit; text-decoration: none; }
 
   .card-grid-2 {
     grid-template-columns: 1fr;
+  }
+
+  .profile-header {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 }
 

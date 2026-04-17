@@ -61,34 +61,28 @@
   <script src="../assets/js/auth.js"></script>
   <script>
     // If already authenticated, skip straight to protected index
-    if (sessionStorage.getItem("dfdn_session") === "authenticated") {
-      const last = parseInt(sessionStorage.getItem("dfdn_last_active") || "0", 10);
-      if ((Date.now() - last) < 30 * 60 * 1000) {
-        window.location.replace("index.html");
-      }
+    if (isAuthenticated()) {
+      window.location.replace("index.html");
     }
 
-    const form      = document.getElementById("gate-form");
-    const errorMsg  = document.getElementById("error-msg");
-    const submitBtn = document.getElementById("submit-btn");
-
-    form.addEventListener("submit", async (e) => {
+    document.getElementById("gate-form").addEventListener("submit", async (e) => {
       e.preventDefault();
+      const errorMsg  = document.getElementById("error-msg");
+      const submitBtn = document.getElementById("submit-btn");
+      const pwInput   = document.getElementById("password");
+
       errorMsg.style.display = "none";
       submitBtn.textContent  = "Checking...";
       submitBtn.disabled     = true;
 
-      const pw      = document.getElementById("password").value;
-      const success = await login(pw);
-
-      if (success) {
+      if (await login(pwInput.value)) {
         window.location.replace("index.html");
       } else {
         errorMsg.style.display = "block";
         submitBtn.textContent  = "Enter";
         submitBtn.disabled     = false;
-        document.getElementById("password").value = "";
-        document.getElementById("password").focus();
+        pwInput.value = "";
+        pwInput.focus();
       }
     });
   </script>

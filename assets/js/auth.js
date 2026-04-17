@@ -34,8 +34,8 @@ const GATE_PATH        = "/protected/gate.html";
  */
 async function sha256(message) {
   const encoder = new TextEncoder();
-  const data     = encoder.encode(message);
-  const hashBuf  = await crypto.subtle.digest("SHA-256", data);
+  const data    = encoder.encode(message);
+  const hashBuf = await crypto.subtle.digest("SHA-256", data);
   return Array.from(new Uint8Array(hashBuf))
     .map(b => b.toString(16).padStart(2, "0"))
     .join("");
@@ -68,6 +68,24 @@ function _touchSession() {
 // ── PUBLIC API ────────────────────────────────────────────────────────────────
 
 /**
+ * Check whether a valid, non-expired session exists.
+ * Does not redirect — just returns a boolean.
+ * @returns {boolean}
+ */
+function isAuthenticated() {
+  return _isSessionValid();
+}
+
+/**
+ * Returns milliseconds remaining in the current session, or 0 if expired/absent.
+ * @returns {number}
+ */
+function sessionRemaining() {
+  const last = parseInt(sessionStorage.getItem(LAST_ACTIVE_KEY) || "0", 10);
+  return Math.max(0, IDLE_TIMEOUT_MS - (Date.now() - last));
+}
+
+/**
  * Attempt login with a plaintext password.
  * Returns true on success (and writes session), false on failure.
  * @param {string} plaintext
@@ -82,12 +100,17 @@ async function login(plaintext) {
   return false;
 }
 
+/** Guard: true if a redirect is already in progress */
+let _redirecting = false;
+
 /**
  * Call at the top of every protected page.
  * Redirects to gate.html if the session is missing or expired.
  */
 function checkAuth() {
+  if (_redirecting) return;
   if (!_isSessionValid()) {
+    _redirecting = true;
     _clearSession();
     window.location.replace(GATE_PATH);
   }
@@ -97,12 +120,14 @@ function checkAuth() {
  * Explicitly log out and redirect to gate.
  */
 function logout() {
+  if (_redirecting) return;
+  _redirecting = true;
   _clearSession();
   window.location.replace(GATE_PATH);
 }
 
 // ── IDLE RESET ────────────────────────────────────────────────────────────────
-// Resets the idle clock on any meaningful user interaction.
-["click", "keydown", "scroll", "mousemove", "touchstart"].forEach(evt => {
+// Resets the idle clock on user interaction within the page.
+["click", "keydown", "scroll", "touchstart"].forEach(evt => {
   document.addEventListener(evt, _touchSession, { passive: true });
 });

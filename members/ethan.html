@@ -13,7 +13,7 @@
       <span class="dot"></span>
       <span class="name">Flood Detection Network</span>
     </a>
-    <button class="nav-toggle" aria-label="Toggle navigation" onclick="this.parentElement.querySelector('.nav-links').classList.toggle('open')">
+    <button class="nav-toggle" aria-label="Toggle navigation">
       <span></span><span></span><span></span>
     </button>
     <ul class="nav-links">
@@ -25,7 +25,7 @@
   </nav>
 
   <!-- PROFILE HEADER -->
-  <section style="padding: 5rem 3rem 4rem; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: auto 1fr; gap: 3rem; align-items: start;">
+  <section class="page-wrap profile-header" style="padding-top: 5rem; padding-bottom: 4rem;">
     <div>
       <div class="avatar avatar-lg">EH</div>
     </div>
@@ -49,7 +49,7 @@
   <hr class="divider">
 
   <!-- CONTENT -->
-  <div class="page-wrap" style="padding-top: 3rem; padding-bottom: 3rem; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start;">
+  <div class="page-wrap profile-grid" style="padding-top: 3rem; padding-bottom: 3rem;">
 
     <!-- LEFT: Bio + Skills + Image -->
     <div style="display: flex; flex-direction: column; gap: 2rem;">
@@ -110,7 +110,7 @@
           method="POST"
           data-netlify="true"
           netlify-honeypot="bot-field"
-          action="/protected/messages/success.html"
+          action="/success.html"
           id="contact-form"
         >
           <!-- Netlify hidden fields -->
@@ -151,5 +151,10 @@
     &copy; 2026 ECE:4880 Senior Design &mdash; University of Iowa
   </footer>
 
+  <script>
+    document.querySelector(".nav-toggle").addEventListener("click", function() {
+      this.parentElement.querySelector(".nav-links").classList.toggle("open");
+    });
+  </script>
 </body>
 </html>

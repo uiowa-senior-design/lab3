@@ -183,8 +183,12 @@ exports.handler = async (event) => {
     return { statusCode: 400 };
   }
 
-  const { name, email, message, member } = payload.data ?? {};
-  const timestamp = payload.created_at ?? new Date().toISOString();
+  const data = payload.data ?? {};
+  const name    = (data.name    || "").trim();
+  const email   = (data.email   || "").trim();
+  const message = (data.message || "").trim();
+  const member  = (data.member  || "").trim();
+  const timestamp = payload.created_at || new Date().toISOString();
 
   if (!name || !message || !member) {
     console.error("Missing required fields in submission:", payload.data);
@@ -216,11 +220,18 @@ exports.handler = async (event) => {
   let indexSha = null;
 
   if (existing) {
+    indexSha = existing.sha;
     try {
-      entries  = JSON.parse(fromBase64(existing.content));
-      indexSha = existing.sha;
-    } catch {
-      entries = [];
+      entries = JSON.parse(fromBase64(existing.content));
+      if (!Array.isArray(entries)) {
+        console.warn("index.json was not an array — starting fresh");
+        entries = [];
+      }
+    } catch (parseErr) {
+      console.error("Failed to parse existing index.json — refusing to overwrite:", parseErr);
+      // Still return 200 to Netlify since the message HTML was already written.
+      // The index will be out of sync but no data is lost — the HTML file exists.
+      return { statusCode: 200, body: "Message saved but index.json update skipped due to parse error" };
     }
   }
 
