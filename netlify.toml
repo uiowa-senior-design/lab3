@@ -2,28 +2,11 @@
   functions = "netlify/functions"
   publish   = "."
 
-# ── Form submissions ──────────────────────────────────────────────────────────
-# Netlify detects forms with data-netlify="true" automatically.
-# Submissions are forwarded to save-message.js via the form's action attribute.
-
-# ── Redirects ─────────────────────────────────────────────────────────────────
-# Block direct URL access to the protected directory.
-# The actual auth enforcement is done client-side in auth.js;
-# these rules add a server-side layer so protected pages aren't
-# trivially indexable or directly linkable.
-
-[[redirects]]
-  from   = "/protected/*"
-  to     = "/protected/gate.html"
-  status = 200
-  # Note: this is intentionally a 200 (rewrite, not redirect) so the
-  # browser URL doesn't change — auth.js then decides whether to allow
-  # the page to render or bounce to gate.html. Remove this rule if it
-  # interferes with navigation after successful auth.
-
 # ── Headers ───────────────────────────────────────────────────────────────────
+# Prevent protected pages from being indexed or cached.
+# Client-side auth.js enforces the session check on every page load.
 [[headers]]
   for = "/protected/*"
   [headers.values]
-    X-Robots-Tag = "noindex, nofollow"
+    X-Robots-Tag  = "noindex, nofollow"
     Cache-Control = "no-store"
