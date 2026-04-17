@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ECE:4880 Senior Design Team</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --gold: #FFCD00;
+      --dark: #0d0d0d;
+      --card-bg: #161616;
+      --border: #2a2a2a;
+      --text-muted: #666;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background: var(--dark);
+      color: #e0e0e0;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 3rem;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: var(--dark);
+      z-index: 10;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .nav-logo .dot {
+      width: 10px;
+      height: 10px;
+      background: var(--gold);
+      border-radius: 50%;
+    }
+    .nav-logo span {
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      color: #aaa;
+      text-transform: uppercase;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2.5rem;
+    }
+    nav ul a {
+      color: #666;
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      transition: color 0.2s;
+    }
+    nav ul a:hover { color: var(--gold); }
+
+    /* HERO */
+    .hero {
+      padding: 7rem 3rem 5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .hero::before {
+      content: 'ECE:4880';
+      position: absolute;
+      top: 4rem;
+      right: 3rem;
+      font-size: 8rem;
+      font-weight: 900;
+      color: #1a1a1a;
+      letter-spacing: -0.05em;
+      line-height: 1;
+      user-select: none;
+    }
+    .hero .tag {
+      display: inline-block;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.75rem;
+      margin-bottom: 2rem;
+    }
+    .hero h1 {
+      font-size: 4.5rem;
+      font-weight: 900;
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      color: white;
+      max-width: 700px;
+    }
+    .hero h1 span { color: var(--gold); }
+    .hero p {
+      margin-top: 1.5rem;
+      color: #777;
+      font-size: 1rem;
+      line-height: 1.7;
+      max-width: 480px;
+    }
+    .hero-actions {
+      margin-top: 2.5rem;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+    .btn-gold {
+      background: var(--gold);
+      color: var(--dark);
+      padding: 0.8rem 2rem;
+      text-decoration: none;
+      font-weight: 900;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: opacity 0.2s;
+    }
+    .btn-gold:hover { opacity: 0.85; }
+    .btn-ghost {
+      color: #555;
+      text-decoration: none;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.2s;
+    }
+    .btn-ghost:hover { color: white; }
+
+    /* DIVIDER */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0;
+    }
+
+    /* STATS BAR */
+    .stats-bar {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 3rem;
+      display: flex;
+      gap: 3rem;
+    }
+    .stat { }
+    .stat .num {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--gold);
+    }
+    .stat .lbl {
+      font-size: 0.75rem;
+      color: #555;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: 0.1rem;
+    }
+
+    /* TEAM */
+    .section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem;
+    }
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 2rem;
+    }
+    .section-header h2 {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: #555;
+    }
+    .section-header a {
+      font-size: 0.8rem;
+      color: var(--gold);
+      text-decoration: none;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+    .member-card {
+      background: var(--card-bg);
+      padding: 2rem;
+      transition: background 0.2s;
+      cursor: pointer;
+    }
+    .member-card:hover { background: #1e1e1e; }
+    .member-card .num {
+      font-size: 0.7rem;
+      color: #333;
+      margin-bottom: 1.5rem;
+      font-weight: 900;
+    }
+    .member-card .avatar {
+      width: 48px;
+      height: 48px;
+      border: 2px solid var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      font-weight: 900;
+      color: var(--gold);
+      margin-bottom: 1.25rem;
+    }
+    .member-card h3 { font-size: 1rem; color: white; margin-bottom: 0.25rem; }
+    .member-card .role { font-size: 0.75rem; color: var(--gold); margin-bottom: 1rem; letter-spacing: 0.05em; }
+    .member-card p { font-size: 0.82rem; color: #666; line-height: 1.6; margin-bottom: 1.25rem; }
+    .member-card .link {
+      font-size: 0.75rem;
+      color: #444;
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      transition: color 0.2s;
+    }
+    .member-card:hover .link { color: var(--gold); }
+
+    /* PROJECT */
+    .project-block {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      padding: 2.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: start;
+      margin-bottom: 1px;
+    }
+    .project-block h2 { font-size: 1.6rem; color: white; font-weight: 900; margin-bottom: 1rem; }
+    .project-block p { font-size: 0.9rem; color: #666; line-height: 1.7; }
+    .project-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1.5rem; }
+    .tag-pill {
+      border: 1px solid var(--border);
+      color: #555;
+      font-size: 0.7rem;
+      padding: 0.3rem 0.7rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* PROTECTED */
+    .protected-block {
+      background: var(--gold);
+      padding: 2rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .protected-block .left h3 { font-size: 1rem; color: var(--dark); font-weight: 900; }
+    .protected-block .left p { font-size: 0.82rem; color: #555; margin-top: 0.25rem; }
+    .protected-block a {
+      background: var(--dark);
+      color: var(--gold);
+      padding: 0.7rem 1.75rem;
+      text-decoration: none;
+      font-weight: 900;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.75rem;
+      color: #333;
+      letter-spacing: 0.05em;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-logo">
+      <div class="dot"></div>
+      <span>ECE:4880 &mdash; Senior Design</span>
+    </div>
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Team</a></li>
+      <li><a href="#">Project</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="hero">
+    <div class="tag">University of Iowa &bull; Spring 2026</div>
+    <h1>Senior<br><span>Design</span><br>Portfolio</h1>
+    <p>Capstone engineering project developed by a team of students at the University of Iowa.</p>
+    <div class="hero-actions">
+      <a href="#" class="btn-gold">View Project</a>
+      <a href="#" class="btn-ghost">Protected Area &rarr;</a>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="num">3</div>
+      <div class="lbl">Team Members</div>
+    </div>
+    <div class="stat">
+      <div class="num">2026</div>
+      <div class="lbl">Graduating</div>
+    </div>
+    <div class="stat">
+      <div class="num">ECE</div>
+      <div class="lbl">Department</div>
+    </div>
+    <div class="stat">
+      <div class="num">4880</div>
+      <div class="lbl">Course</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="section">
+    <div class="section-header">
+      <h2>The Team</h2>
+      <a href="#">View All</a>
+    </div>
+    <div class="team-grid">
+      <div class="member-card">
+        <div class="num">01</div>
+        <div class="avatar">A</div>
+        <h3>Team Member A</h3>
+        <div class="role">Electrical Engineering</div>
+        <p>Interested in embedded systems and hardware design. Working on the sensing and signal processing components.</p>
+        <a href="#" class="link">PROFILE &rarr;</a>
+      </div>
+      <div class="member-card">
+        <div class="num">02</div>
+        <div class="avatar">B</div>
+        <h3>Team Member B</h3>
+        <div class="role">Computer Engineering</div>
+        <p>Focused on firmware and systems architecture. Bridges the gap between hardware and software.</p>
+        <a href="#" class="link">PROFILE &rarr;</a>
+      </div>
+      <div class="member-card">
+        <div class="num">03</div>
+        <div class="avatar">C</div>
+        <h3>Team Member C</h3>
+        <div class="role">Computer Science</div>
+        <p>Specializes in software and data pipelines. Responsible for the application layer and user interface.</p>
+        <a href="#" class="link">PROFILE &rarr;</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" style="padding-top:0">
+    <div class="project-block">
+      <div>
+        <h2>About the Project</h2>
+        <p>Brief description of your senior design project. Explain the problem space, your team's approach, and the expected outcomes. Write for a general audience.</p>
+        <div class="project-tags">
+          <span class="tag-pill">Embedded Systems</span>
+          <span class="tag-pill">Signal Processing</span>
+          <span class="tag-pill">Spring 2026</span>
+        </div>
+      </div>
+      <div>
+        <p style="color:#444;font-size:0.82rem;line-height:1.8;">Additional details, technical summary, or project status updates can go in this column. Use it for specs, milestones, or a short timeline.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="protected-block">
+    <div class="left">
+      <h3>Protected Team Content</h3>
+      <p>Messages, notes, and private materials. Password required.</p>
+    </div>
+    <a href="#">Enter &rarr;</a>
+  </div>
+
+  <footer>
+    &copy; 2026 ECE:4880 SENIOR DESIGN &mdash; UNIVERSITY OF IOWA
+  </footer>
+
+</body>
+</html>

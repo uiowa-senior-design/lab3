@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ECE:4880 Senior Design Team</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Georgia', serif;
+      background: #f5f5f0;
+      color: #1a1a1a;
+    }
+
+    /* NAV */
+    nav {
+      background: #1a1a1a;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 2.5rem;
+      height: 64px;
+    }
+    nav .logo {
+      color: #FFCD00;
+      font-size: 1.1rem;
+      font-weight: bold;
+      letter-spacing: 0.05em;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+    nav ul a {
+      color: #ccc;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-family: 'Arial', sans-serif;
+      transition: color 0.2s;
+    }
+    nav ul a:hover { color: #FFCD00; }
+
+    /* HERO */
+    .hero {
+      background: #1a1a1a;
+      color: white;
+      padding: 5rem 2.5rem 4rem;
+      border-bottom: 4px solid #FFCD00;
+    }
+    .hero .label {
+      font-family: 'Arial', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      color: #FFCD00;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: normal;
+      line-height: 1.2;
+      max-width: 600px;
+    }
+    .hero p {
+      margin-top: 1.25rem;
+      color: #aaa;
+      font-family: 'Arial', sans-serif;
+      font-size: 1rem;
+      max-width: 500px;
+      line-height: 1.6;
+    }
+    .hero-actions {
+      margin-top: 2rem;
+      display: flex;
+      gap: 1rem;
+    }
+    .btn-primary {
+      background: #FFCD00;
+      color: #1a1a1a;
+      padding: 0.75rem 1.75rem;
+      text-decoration: none;
+      font-family: 'Arial', sans-serif;
+      font-size: 0.9rem;
+      font-weight: bold;
+    }
+    .btn-secondary {
+      border: 1px solid #555;
+      color: #ccc;
+      padding: 0.75rem 1.75rem;
+      text-decoration: none;
+      font-family: 'Arial', sans-serif;
+      font-size: 0.9rem;
+    }
+    .btn-secondary:hover { border-color: #FFCD00; color: #FFCD00; }
+
+    /* MAIN */
+    main { max-width: 1100px; margin: 0 auto; padding: 3rem 2rem; }
+
+    .section-title {
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #888;
+      font-family: 'Arial', sans-serif;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #ddd;
+    }
+
+    /* TEAM GRID */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 3.5rem;
+    }
+    .member-card {
+      background: white;
+      border-top: 3px solid #FFCD00;
+      padding: 1.5rem;
+    }
+    .member-avatar {
+      width: 60px;
+      height: 60px;
+      background: #1a1a1a;
+      border-radius: 50%;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFCD00;
+      font-size: 1.4rem;
+      font-family: 'Arial', sans-serif;
+    }
+    .member-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.25rem;
+    }
+    .member-card .role {
+      font-family: 'Arial', sans-serif;
+      font-size: 0.8rem;
+      color: #888;
+      margin-bottom: 0.75rem;
+    }
+    .member-card p {
+      font-family: 'Arial', sans-serif;
+      font-size: 0.85rem;
+      color: #555;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+    .member-card a {
+      font-family: 'Arial', sans-serif;
+      font-size: 0.8rem;
+      color: #1a1a1a;
+      text-decoration: none;
+      border-bottom: 1px solid #FFCD00;
+      padding-bottom: 1px;
+    }
+
+    /* PROJECT SECTION */
+    .project-banner {
+      background: white;
+      border-left: 4px solid #FFCD00;
+      padding: 1.75rem 2rem;
+      margin-bottom: 3.5rem;
+    }
+    .project-banner h2 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+    .project-banner p {
+      font-family: 'Arial', sans-serif;
+      font-size: 0.9rem;
+      color: #555;
+      line-height: 1.6;
+      max-width: 650px;
+    }
+
+    /* PROTECTED LINK */
+    .protected-section {
+      background: #1a1a1a;
+      color: white;
+      padding: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .protected-section h3 { font-size: 1rem; color: #FFCD00; margin-bottom: 0.25rem; }
+    .protected-section p { font-family: 'Arial', sans-serif; font-size: 0.85rem; color: #888; }
+    .protected-section a {
+      background: #FFCD00;
+      color: #1a1a1a;
+      padding: 0.6rem 1.5rem;
+      text-decoration: none;
+      font-family: 'Arial', sans-serif;
+      font-size: 0.85rem;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-family: 'Arial', sans-serif;
+      font-size: 0.8rem;
+      color: #aaa;
+      border-top: 1px solid #ddd;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">ECE:4880 &mdash; Senior Design</div>
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Team</a></li>
+      <li><a href="#">Project</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="hero">
+    <div class="label">University of Iowa &bull; Spring 2026</div>
+    <h1>Senior Design<br>Project Portfolio</h1>
+    <p>A capstone engineering project developed by a team of students at the University of Iowa.</p>
+    <div class="hero-actions">
+      <a href="#" class="btn-primary">View Our Project</a>
+      <a href="#" class="btn-secondary">Protected Content</a>
+    </div>
+  </div>
+
+  <main>
+
+    <div class="project-banner">
+      <h2>About the Project</h2>
+      <p>Brief description of your senior design project goes here. Explain what problem you're solving, what your approach is, and what the expected outcomes are. Keep it accessible for a general audience.</p>
+    </div>
+
+    <div class="section-title">Meet the Team</div>
+    <div class="team-grid">
+      <div class="member-card">
+        <div class="member-avatar">A</div>
+        <h3>Team Member A</h3>
+        <div class="role">Electrical Engineering</div>
+        <p>Short bio about interests, skills, and goals. This person is passionate about embedded systems and hardware design.</p>
+        <a href="#">View Profile &rarr;</a>
+      </div>
+      <div class="member-card">
+        <div class="member-avatar">B</div>
+        <h3>Team Member B</h3>
+        <div class="role">Computer Engineering</div>
+        <p>Short bio about interests, skills, and goals. Interested in software architecture and systems programming.</p>
+        <a href="#">View Profile &rarr;</a>
+      </div>
+      <div class="member-card">
+        <div class="member-avatar">C</div>
+        <h3>Team Member C</h3>
+        <div class="role">Computer Science</div>
+        <p>Short bio about interests, skills, and goals. Focused on machine learning and data-driven applications.</p>
+        <a href="#">View Profile &rarr;</a>
+      </div>
+    </div>
+
+    <div class="protected-section">
+      <div>
+        <h3>Protected Content</h3>
+        <p>Team messages and private project materials. Password required.</p>
+      </div>
+      <a href="#">Enter &rarr;</a>
+    </div>
+
+  </main>
+
+  <footer>
+    &copy; 2026 ECE:4880 Senior Design Team &mdash; University of Iowa
+  </footer>
+
+</body>
+</html>

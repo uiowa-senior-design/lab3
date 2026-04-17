@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ECE:4880 Senior Design Team</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --gold: #FFCD00;
+      --gold-dark: #c9a200;
+      --ink: #1c1c1e;
+      --muted: #6e6e73;
+      --bg: #ffffff;
+      --surface: #f2f2f7;
+      --border: #e5e5ea;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 2rem;
+      height: 52px;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .nav-left { display: flex; align-items: center; gap: 0.6rem; }
+    .nav-badge {
+      background: var(--gold);
+      color: var(--ink);
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      letter-spacing: 0.04em;
+    }
+    .nav-title { font-size: 0.9rem; font-weight: 600; color: var(--ink); }
+    nav ul { list-style: none; display: flex; gap: 0.25rem; }
+    nav ul a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 8px;
+      transition: background 0.15s, color 0.15s;
+    }
+    nav ul a:hover { background: var(--surface); color: var(--ink); }
+
+    /* HERO */
+    .hero {
+      padding: 5rem 2rem 4rem;
+      max-width: 960px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--surface);
+      border-radius: 100px;
+      padding: 0.3rem 1rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 1.75rem;
+    }
+    .hero-eyebrow .dot {
+      width: 6px;
+      height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+    }
+    .hero h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: var(--ink);
+    }
+    .hero h1 .highlight {
+      background: linear-gradient(135deg, #c9a200, #FFCD00);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p {
+      margin-top: 1.25rem;
+      font-size: 1.05rem;
+      color: var(--muted);
+      line-height: 1.65;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .hero-actions {
+      margin-top: 2rem;
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+    }
+    .btn-primary {
+      background: var(--ink);
+      color: white;
+      padding: 0.7rem 1.5rem;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: opacity 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.8; }
+    .btn-outline {
+      background: var(--surface);
+      color: var(--ink);
+      padding: 0.7rem 1.5rem;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+    .btn-outline:hover { background: var(--border); }
+
+    /* CONTENT */
+    .content { max-width: 960px; margin: 0 auto; padding: 0 2rem 4rem; }
+
+    /* PROJECT CARD */
+    .project-card {
+      background: var(--ink);
+      border-radius: 16px;
+      padding: 2.5rem;
+      color: white;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 2rem;
+    }
+    .project-card .card-left h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+    .project-card .card-left p {
+      font-size: 0.9rem;
+      color: #aaa;
+      line-height: 1.65;
+      max-width: 460px;
+    }
+    .project-card .card-chips {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 1.25rem;
+    }
+    .chip {
+      background: #2a2a2a;
+      color: #888;
+      font-size: 0.72rem;
+      padding: 0.3rem 0.65rem;
+      border-radius: 6px;
+    }
+    .chip.gold { background: var(--gold); color: var(--ink); font-weight: 600; }
+
+    /* TEAM SECTION */
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .member-card {
+      background: var(--surface);
+      border-radius: 14px;
+      padding: 1.5rem;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .member-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+    .avatar-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--ink);
+      flex-shrink: 0;
+    }
+    .avatar-info h3 { font-size: 0.95rem; font-weight: 600; }
+    .avatar-info .role { font-size: 0.75rem; color: var(--muted); margin-top: 0.1rem; }
+    .member-card p {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+    .member-link {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--ink);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    .member-link:hover { color: var(--gold-dark); }
+
+    /* BOTTOM ROW */
+    .bottom-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .info-card {
+      background: var(--surface);
+      border-radius: 14px;
+      padding: 1.75rem;
+    }
+    .info-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .info-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+    .protected-card {
+      background: var(--gold);
+      border-radius: 14px;
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .protected-card h3 { font-size: 1rem; font-weight: 700; color: var(--ink); }
+    .protected-card p { font-size: 0.82rem; color: #665000; margin-top: 0.4rem; line-height: 1.5; }
+    .protected-card a {
+      display: inline-block;
+      margin-top: 1.25rem;
+      background: var(--ink);
+      color: white;
+      padding: 0.6rem 1.25rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      align-self: flex-start;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-left">
+      <span class="nav-badge">4880</span>
+      <span class="nav-title">Senior Design</span>
+    </div>
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Team</a></li>
+      <li><a href="#">Project</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-eyebrow">
+      <span class="dot"></span>
+      University of Iowa &bull; Spring 2026
+    </div>
+    <h1>Senior Design<br><span class="highlight">Project Portfolio</span></h1>
+    <p>A capstone project developed by a team of University of Iowa engineering students.</p>
+    <div class="hero-actions">
+      <a href="#" class="btn-primary">View Our Project</a>
+      <a href="#" class="btn-outline">Protected Content</a>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <div class="project-card">
+      <div class="card-left">
+        <h2>About the Project</h2>
+        <p>Brief description of your senior design project. Explain the problem you're solving, your approach, and expected outcomes. Write for a general audience.</p>
+        <div class="card-chips">
+          <span class="chip gold">Active</span>
+          <span class="chip">Embedded Systems</span>
+          <span class="chip">Signal Processing</span>
+          <span class="chip">Spring 2026</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">Meet the Team</div>
+    <div class="team-grid">
+      <div class="member-card">
+        <div class="avatar-row">
+          <div class="avatar">A</div>
+          <div class="avatar-info">
+            <h3>Team Member A</h3>
+            <div class="role">Electrical Engineering</div>
+          </div>
+        </div>
+        <p>Interested in embedded systems and hardware design. Working on sensing and signal processing components.</p>
+        <a href="#" class="member-link">View Profile &rarr;</a>
+      </div>
+      <div class="member-card">
+        <div class="avatar-row">
+          <div class="avatar">B</div>
+          <div class="avatar-info">
+            <h3>Team Member B</h3>
+            <div class="role">Computer Engineering</div>
+          </div>
+        </div>
+        <p>Focused on firmware and systems architecture. Bridges the gap between hardware and software layers.</p>
+        <a href="#" class="member-link">View Profile &rarr;</a>
+      </div>
+      <div class="member-card">
+        <div class="avatar-row">
+          <div class="avatar">C</div>
+          <div class="avatar-info">
+            <h3>Team Member C</h3>
+            <div class="role">Computer Science</div>
+          </div>
+        </div>
+        <p>Specializes in software and data pipelines. Responsible for the application layer and user interface.</p>
+        <a href="#" class="member-link">View Profile &rarr;</a>
+      </div>
+    </div>
+
+    <div class="bottom-row">
+      <div class="info-card">
+        <h3>About This Site</h3>
+        <p>This portfolio was built for ECE:4880 Principles of ECE/CSE Design at the University of Iowa. It showcases our team, our project, and lets visitors get in touch.</p>
+      </div>
+      <div class="protected-card">
+        <div>
+          <h3>Protected Content</h3>
+          <p>Team messages and private project materials. Requires a password to access.</p>
+        </div>
+        <a href="#">Enter Protected Area &rarr;</a>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    &copy; 2026 ECE:4880 Senior Design Team &mdash; University of Iowa
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jesse Meadows — Flood Detection Network</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="../index.html" class="nav-logo">
+      <span class="dot"></span>
+      <span class="name">Flood Detection Network</span>
+    </a>
+    <button class="nav-toggle" aria-label="Toggle navigation" onclick="this.parentElement.querySelector('.nav-links').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../index.html#team" class="active">Team</a></li>
+      <li><a href="../index.html#project">Project</a></li>
+      <li><a href="../protected/gate.html">Protected</a></li>
+    </ul>
+  </nav>
+
+  <!-- PROFILE HEADER -->
+  <section style="padding: 5rem 3rem 4rem; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: auto 1fr; gap: 3rem; align-items: start;">
+    <div>
+      <div class="avatar avatar-lg">JM</div>
+    </div>
+    <div>
+      <div class="label" style="margin-bottom: 0.75rem;">
+        <a href="../index.html#team" style="color: var(--text-muted); text-decoration: none;">&#8592; Team</a>
+        &nbsp;&bull;&nbsp; Member 02
+      </div>
+      <h1 style="font-size: 3rem; font-weight: 900; color: white; letter-spacing: -0.02em; line-height: 1.1;">
+        Jesse Meadows
+      </h1>
+      <div style="color: var(--gold); font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 0.5rem;">
+        Electrical &amp; Computer Engineering
+      </div>
+      <div style="color: var(--text-muted); font-size: 0.8rem; margin-top: 0.25rem;">
+        University of Iowa &mdash; Expected Graduation: Dec. 2026
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- CONTENT -->
+  <div class="page-wrap" style="padding-top: 3rem; padding-bottom: 3rem; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start;">
+
+    <!-- LEFT: Bio + Skills + Image -->
+    <div style="display: flex; flex-direction: column; gap: 2rem;">
+
+      <div style="background: var(--surface); border: 1px solid var(--border); padding: 2rem;">
+        <div class="label" style="margin-bottom: 1rem;">About</div>
+        <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.75;">
+          Placeholder bio. Describe your background, interests, and what drew you to this field.
+          This is a great place to highlight academic achievements, past projects, or experiences
+          that are relevant to your career goals.
+        </p>
+        <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.75; margin-top: 1rem;">
+          Second paragraph — expand on your specific interests and what you hope to do after graduation.
+        </p>
+      </div>
+
+      <div style="background: var(--surface); border: 1px solid var(--border); padding: 2rem;">
+        <div class="label" style="margin-bottom: 1rem;">Photo</div>
+        <div style="background: var(--surface-2); border: 1px dashed var(--border); height: 220px; display: flex; align-items: center; justify-content: center;">
+          <span style="color: var(--text-dim); font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;">Image Placeholder</span>
+        </div>
+      </div>
+
+      <div style="background: var(--surface); border: 1px solid var(--border); padding: 2rem;">
+        <div class="label" style="margin-bottom: 1rem;">Skills &amp; Interests</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+          <span class="chip">Placeholder Skill</span>
+          <span class="chip">Placeholder Skill</span>
+          <span class="chip">Placeholder Skill</span>
+          <span class="chip">Placeholder Skill</span>
+          <span class="chip">Placeholder Skill</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: Project Role + Contact Form -->
+    <div style="display: flex; flex-direction: column; gap: 2rem;">
+
+      <div style="background: var(--surface); border: 1px solid var(--border); border-top: 2px solid var(--gold); padding: 2rem;">
+        <div class="label" style="margin-bottom: 1rem;">Role on Project</div>
+        <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.75;">
+          Describe your specific contributions to the Distributed Flood Detection Network —
+          what components you own, what problems you're solving, and how your skills apply
+          to the project deliverables.
+        </p>
+      </div>
+
+      <div style="background: var(--surface); border: 1px solid var(--border); padding: 2rem;">
+        <div class="label" style="margin-bottom: 1.5rem;">Send a Message</div>
+        <form
+          name="contact-jesse"
+          method="POST"
+          data-netlify="true"
+          netlify-honeypot="bot-field"
+          action="/protected/messages/success.html"
+          id="contact-form"
+        >
+          <input type="hidden" name="form-name" value="contact-jesse">
+          <input type="hidden" name="member" value="Jesse Meadows">
+          <p style="display:none;">
+            <label>Don't fill this out: <input name="bot-field"></label>
+          </p>
+
+          <div class="form-group">
+            <label for="sender-name">Your Name</label>
+            <input type="text" id="sender-name" name="name" placeholder="Full name" required>
+          </div>
+
+          <div class="form-group">
+            <label for="sender-email">Email <span style="color: var(--text-dim); font-size: 0.65rem;">(optional)</span></label>
+            <input type="email" id="sender-email" name="email" placeholder="your@email.com">
+          </div>
+
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="5" placeholder="Write your message here..." required></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-gold" style="width: 100%;">Send Message</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MEMBER NAV -->
+  <div class="page-wrap" style="padding-bottom: 3rem; display: flex; justify-content: space-between;">
+    <a href="ethan.html" class="btn btn-ghost" style="font-size: 0.8rem;">&larr; Ethan Holter</a>
+    <a href="riggen.html" class="btn btn-ghost" style="font-size: 0.8rem;">Next: Riggen Snyder &rarr;</a>
+  </div>
+
+  <footer class="footer">
+    &copy; 2026 ECE:4880 Senior Design &mdash; University of Iowa
+  </footer>
+
+</body>
+</html>
