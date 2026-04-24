@@ -259,6 +259,10 @@ a   { color: inherit; text-decoration: none; }
   font-size: 1.75rem;
 }
 
+img.avatar {
+  object-fit: cover;
+}
+
 /* ── Form elements ────────────────────────────────────────── */
 .form-group {
   margin-bottom: 1.25rem;
