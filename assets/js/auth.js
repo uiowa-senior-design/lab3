@@ -15,8 +15,6 @@
 
 // ── CONFIG ────────────────────────────────────────────────────────────────────
 
-// SHA-256 hash of "Spring2026Lab3"
-// DO NOT store the plaintext password here or anywhere in the codebase.
 const PASSWORD_HASH = "96db3ecc8355c49b5736ca38b06e6dbb151eb6aac88cc531e074b6c91871aab9";
 // ↑ SHA-256 of default password — change_password.py will overwrite this line
 
